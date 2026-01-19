@@ -15,20 +15,21 @@ The system consists of two devices:
 
 📌 Insert overview sketch here
 /sketches/overview.png
-(Show both devices, gauge, LED glow, button, and nightstand placement)
+(Show both devices, LED glow, button, and nightstand placement)
 
 ### Sensor Device (Sleep Environment Monitor)
 #### Description
 The sensor device continuously monitors environmental conditions during sleep using a low-power duty cycle. Data is aggregated overnight and transmitted wirelessly to the display device in the morning.
 
 #### Sensors & Parts (part numbers)
-| Function | Part Number | Description |
-|---------|------------|-------------|
-| MCU + Wireless| Seeed Studio XIAO ESP32-C3| BLE, low power |
-| Ambient Light Sensor | VEML7700 | High-sensitivity ambient light sensor (I²C) |
-| Microphone | SPH0645LM4H-B | I²S MEMS microphone, RMS only |
-| Temperature | TMP117 | High-accuracy temperature sensing |
-| Battery Charger | MCP73831 | LiPo charging IC |
+| Function | Part Number | Quantity | Description |
+|---------|------------|----------|-------------|
+| MCU + Wireless| Seeed Studio XIAO ESP32-C3| 1 | BLE, low power |
+| Ambient Light Sensor | VEML7700 | 1 | High-sensitivity ambient light sensor (I²C) |
+| Microphone | SPH0645LM4H-B | 1 | I²S MEMS microphone, RMS only |
+| Temperature | TMP117 | 1 | High-accuracy temperature sensing |
+| Battery Charger | MCP73831 | 1 | LiPo charging IC |
+| LiPo Battery | 3.7V 1000-2000mAh | 1 | Power supply |
 
 #### How it works
 - The device wakes on a scheduled interval during sleep hours.
@@ -42,17 +43,18 @@ The sensor device continuously monitors environmental conditions during sleep us
 The display device presents the overnight Sleep Environment Score using a low-power OLED screen combined with a soft ambient LED indicator. The OLED screen provides clear, numerical feedback in the morning, while the LED glow offers an immediate, non-intrusive visual sense of sleep quality. A single button allows the user to cycle through secondary metrics such as light exposure, noise level, and temperature.
 
 #### Components & Parts
-| Function | Part Number | Notes |
-|---------|------------|------|
-| MCU + Wireless | Seeed Studio XIAO ESP32-C3 | Wireless receiver |
-| Display | SSD1306 OLED (128×64) | Low-power I²C screen |
-| LED | Warm White Diffused LED | Ambient sleep quality indicator |
-| Button | Tactile Momentary Switch | Metric navigation |
-| Battery | LiPo 2000 mAh | Multi-day operation |
+| Function | Part Number | Quantity | Notes |
+|---------|------------|----------|------|
+| MCU + Wireless | Seeed Studio XIAO ESP32-C3 | 1 | Wireless receiver |
+| Display | SSD1306 OLED (128×64) | 1 | Low-power I²C screen |
+| LED | Warm White Diffused LED | 1 | Ambient sleep quality indicator |
+| Button | Tactile Momentary Switch | 1 | Metric navigation |
+| Battery | LiPo 2000 mAh | 1 | Multi-day operation |
+| Resistor | 220Ω | 1 | LED current limiting |
 
 ### System Communication & Data Flow
 
-![Data Flow Diagram](./data_flow_diagram.png)
+![Data Flow Diagram](./sketches/data_flow_diagram.png)
 
 *Figure: Complete data pipeline from sensors through processing to display outputs.*
 
@@ -62,7 +64,7 @@ The system consists of two standalone devices: a sleep environment sensor device
 
 Communication between the sensor device and the display device is implemented using BLE. BLE is selected due to its low power consumption and suitability for short-range, infrequent data transmission in a sleep environment context.
 
-### Data Flow & Processing Pipeline
+#### Data Flow & Processing Pipeline
 During the sleep period, the sensor device periodically samples ambient light, sound level, and temperature.
 Audio data is processed locally using RMS calculation and basic spectral weighting to emphasize disruptive noise patterns.
 All sensor readings are time-weighted and aggregated into a single overnight dataset.
