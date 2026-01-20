@@ -13,10 +13,7 @@ The system consists of two devices:
 - A display unit resembling a small alarm clock with an OLED screen 
   and soft LED indicator that communicates the sleep quality score at a glance.
 
-📌 Insert overview sketch here
-/sketches/overview.png
-(Show both devices, LED glow, button, and nightstand placement)
-
+![Data Flow Diagram](./sketches/overview.png)
 ### Sensor Device (Sleep Environment Monitor)
 #### Description
 The sensor device continuously monitors environmental conditions during sleep using a low-power duty cycle. Data is aggregated overnight and transmitted wirelessly to the display device in the morning.
@@ -30,6 +27,8 @@ The sensor device continuously monitors environmental conditions during sleep us
 | Temperature | TMP117 | 1 | High-accuracy temperature sensing |
 | Battery Charger | MCP73831 | 1 | LiPo charging IC |
 | LiPo Battery | 3.7V 1000-2000mAh | 1 | Power supply |
+
+![Data Flow Diagram](./sketches/sensor_device.png)
 
 #### How it works
 - The device wakes on a scheduled interval during sleep hours.
@@ -51,6 +50,8 @@ The display device presents the overnight Sleep Environment Score using a low-po
 | Button | Tactile Momentary Switch | 1 | Metric navigation |
 | Battery | LiPo 2000 mAh | 1 | Multi-day operation |
 | Resistor | 220Ω | 1 | LED current limiting |
+
+![Data Flow Diagram](./sketches/display_device.png)
 
 ### System Communication & Data Flow
 
