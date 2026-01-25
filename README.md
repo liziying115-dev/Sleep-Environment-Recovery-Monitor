@@ -7,11 +7,8 @@ The Sleep Environment & Recovery Monitor evaluates overnight sleep conditions �
 #### What it looks like
 
 The system consists of two devices:
-
-- A sensor unit placed on a nightstand that quietly monitors the sleep environment overnight
-
-- A display unit resembling a small alarm clock with an OLED screen 
-  and soft LED indicator that communicates the sleep quality score at a glance.
+* A sensor unit placed on a nightstand that quietly monitors the sleep environment overnight (light, sound, temperature)
+* A display unit resembling a small alarm clock with an OLED screen, LED indicator, and a stepper-motor-driven gauge needle that physically points to your sleep quality score
 
 ![Data Flow Diagram](./sketches/overview.png)
 ### Sensor Device (Sleep Environment Monitor)
@@ -39,17 +36,31 @@ The sensor device continuously monitors environmental conditions during sleep us
 
 ### Display Device (Score Interface)
 #### Description
-The display device presents the overnight Sleep Environment Score using a low-power OLED screen combined with a soft ambient LED indicator. The OLED screen provides clear, numerical feedback in the morning, while the LED glow offers an immediate, non-intrusive visual sense of sleep quality. A single button allows the user to cycle through secondary metrics such as light exposure, noise level, and temperature.
+The display device receives environmental data wirelessly and presents the overnight Sleep Environment Score using multiple feedback channels: a physical gauge needle, OLED screen, and ambient LED indicator. A single button allows the user to cycle through secondary metrics such as light exposure, noise level, and temperature.
 
 #### Components & Parts
 | Function | Part Number | Quantity | Notes |
 |---------|------------|----------|------|
 | MCU + Wireless | Seeed Studio XIAO ESP32-C3 | 1 | Wireless receiver |
 | Display | SSD1306 OLED (128×64) | 1 | Low-power I²C screen |
+| Stepper Motor | 28BYJ-48 (5V)        | 1 | Drives gauge needle        |
+| Motor Driver  | ULN2003 Driver Board | 1 | Stepper motor driver       |
+| Gauge Needle  | Custom (3D printed)  | 1 | Physical pointer (0-100)   |
 | LED | Warm White Diffused LED | 1 | Ambient sleep quality indicator |
 | Button | Tactile Momentary Switch | 1 | Metric navigation |
 | Battery | LiPo 2000 mAh | 1 | Multi-day operation |
 | Resistor | 220Ω | 1 | LED current limiting |
+
+#### Gauge Needle Design
+
+Scale: 0-100 (semi-circular arc)
+
+Zones:
+- 0-50: Red zone (Poor)
+- 50-70: Orange zone (Fair)
+- 70-90: Yellow zone (Good)
+- 90-100: Green zone (Excellent)
+
 
 ![Data Flow Diagram](./sketches/display_device.png)
 
@@ -59,20 +70,47 @@ The display device presents the overnight Sleep Environment Score using a low-po
 
 *Figure: Complete data pipeline from sensors through processing to display outputs.*
 
-
 #### System Communication
-The system consists of two standalone devices: a sleep environment sensor device and a display device. The sensor device operates independently overnight, collecting and aggregating environmental data. In the morning, a single summary packet is transmitted wirelessly to the display device using BLE or Wi-Fi.
+The system consists of two standalone devices that communicate wirelessly:
 
-Communication between the sensor device and the display device is implemented using BLE. BLE is selected due to its low power consumption and suitability for short-range, infrequent data transmission in a sleep environment context.
+Sensor Unit (Transmitter):
+- Operates independently overnight
+- Collects and aggregates environmental data
+- Transmits single summary packet in the morning
+
+Display Unit (Receiver):
+- Listens for BLE transmission from sensor unit
+- Receives aggregated data and calculated score
+- Updates three output channels: gauge needle, OLED, LED
+
+Communication Protocol:
+- Technology: BLE
+- Pairing: One-time setup, devices remember each other
+- Data Format: JSON or binary packet containing:
+  - Overall score (0-100)
+  - Average light level (lux)
+  - Average sound level (dB RMS)
+  - Average temperature (°F/°C)
+  - Timestamp
 
 #### Data Flow & Processing Pipeline
-During the sleep period, the sensor device periodically samples ambient light, sound level, and temperature.
-Audio data is processed locally using RMS calculation and basic spectral weighting to emphasize disruptive noise patterns.
-All sensor readings are time-weighted and aggregated into a single overnight dataset.
 
-After aggregation, the data is converted into a normalized Sleep Environment Score.
-This score is transmitted to the display device, where it is visualized on a low-power screen.
-A soft ambient LED glow provides an additional non-screen feedback channel, reinforcing the overall sleep quality without requiring focused attention.
+During Sleep Period:
+1. Sensor device periodically samples ambient light, sound level, and temperature
+2. Audio data is processed locally using RMS calculation and basic spectral weighting to emphasize disruptive noise patterns
+3. All sensor readings are time-weighted (e.g., disruptions during REM sleep weighted higher)
+4. Data is aggregated into a single overnight dataset
+
+Morning Transmission:
+1. Aggregated data is converted into a normalized Sleep Environment Score (0-100)
+2. Score and detailed metrics are packaged into BLE transmission packet
+3. Sensor unit broadcasts packet to display unit
+4. Display unit receives data and updates all feedback channels
+
+Physical Feedback:
+- Gauge Needle: Stepper motor positions needle to corresponding score (0-100 scale)
+- OLED Screen: Displays numeric score and allows cycling through detailed metrics
+- LED Indicator: Glows with color corresponding to quality zone (green/yellow/orange/red)
 
 ### Future Work
 - Optional Wi-Fi connectivity to support long-term data logging or remote visualization
