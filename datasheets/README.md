@@ -19,7 +19,7 @@ This folder contains datasheets for all components used in the Sleep Environment
 - Interface: I²C
 - [Datasheet Link](https://www.vishay.com/docs/84286/veml7700.pdf)
 
-**SPH0645LM4H-B
+**SPH0645LM4H-B**
 - File: `sph0645lm4h_datasheet.pdf`
 - Description: I²S MEMS microphone
 - Manufacturer: Knowles
@@ -32,6 +32,13 @@ This folder contains datasheets for all components used in the Sleep Environment
 - Manufacturer: Texas Instruments
 - Interface: I²C
 - [Datasheet Link](https://www.ti.com/lit/ds/symlink/tmp117.pdf)
+
+OR **BME280**
+- File: `bme280_datasheet.pdf`
+- Description: digital temperature sensor
+- Manufacturer: Bosch Sensortec
+- Interface: I²C
+- [Datasheet Link](https://www.bosch-sensortec.com/media/boschsensortec/downloads/datasheets/bst-bme280-ds002.pdf)
 
 #### Power Management
 **MCP73831**

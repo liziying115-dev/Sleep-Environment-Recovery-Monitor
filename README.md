@@ -21,7 +21,7 @@ The sensor device continuously monitors environmental conditions during sleep us
 | MCU + Wireless| Seeed Studio XIAO ESP32-C3| 1 | BLE, low power |
 | Ambient Light Sensor | VEML7700 | 1 | High-sensitivity ambient light sensor (I²C) |
 | Microphone | SPH0645LM4H-B | 1 | I²S MEMS microphone, RMS only |
-| Temperature | TMP117 | 1 | High-accuracy temperature sensing |
+| Temperature | BME280 | 1 | temperature sensing |
 | Battery Charger | MCP73831 | 1 | LiPo charging IC |
 | LiPo Battery | 3.7V 1000-2000mAh | 1 | Power supply |
 
