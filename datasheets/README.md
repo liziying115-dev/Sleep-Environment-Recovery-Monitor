@@ -66,8 +66,9 @@ datasheets/
 ├── README.md
 ├── esp32-c3_datasheet.pdf
 ├── veml7700_datasheet.pdf
+├── bme280_datasheet.pdf
 ├── sph0645lm4h_datasheet.pdf
 ├── tmp117_datasheet.pdf
 ├── mcp73831_datasheet.pdf
-└── ssd1306_datasheet.pdf (to be added)
+└── ssd1306_datasheet.pdf
 ```
